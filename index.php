@@ -1,6 +1,10 @@
 <?php
 // start session
 session_start();
+
+include("media_list.php");
+include("media_search.php");
+include("media_sort.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -8,16 +12,7 @@ session_start();
 <head>
     <meta charset='utf-8'>
     <title>Book List</title>
-    <?php
-    // if on mobile or portrait, use mobile css
-    $user_agent = $_SERVER['HTTP_USER_AGENT'];
-
-    if (preg_match('/(android|blackberry|iemobile|ipad|iphone|ipod|opera mini|webos)/i', $user_agent)) {
-        echo "<link rel='stylesheet' type='text/css' media='screen' href='css/main-page-mobile.css'>";
-    } else {
-        echo "<link rel='stylesheet' type='text/css' media='screen' href='css/main-page.css'>";
-    }
-    ?>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/main-page.css'>
     <script src='js/main.js'></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
@@ -280,7 +275,7 @@ session_start();
             if (isset($_GET["search"])) {
                 $search = $_GET["search"];
 
-                include("media_search.php");
+                $files = media_search($files, $search, false, $fdir);
             }
 
             if (count($files) < 1 && !isset($_GET["search"])) {
@@ -303,11 +298,7 @@ session_start();
     <div id="content">
         <?php
         if ($dir != "fallback") {
-            $fdir = "media/" . $dir;
-            $files = scandir($fdir);
-            $to_view = false;
-
-            include("media_list.php");
+            media_list($dir, "", $sort, $_GET["search"] ?? "", false);
         }
 
         if ($dir == "fallback" || count($files) == 0) {

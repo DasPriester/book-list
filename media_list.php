@@ -1,47 +1,46 @@
 <?php
-// filter out the . and .. files
-$files = array_diff($files, array('.', '..'));
+include("media.php");
 
-// if there is a search term
-if (isset($_GET["search"])) {
-    $search = $_GET["search"];
+function media_list($dir, $extern, $sort, $search, $to_view)
+{
+    $fdir = $extern . "media/" . $dir;
+    $files = scandir($fdir);
 
-    include("media_search.php");
-}
+    // filter out the . and .. files
+    $files = array_diff($files, array('.', '..'));
 
-// if there is a sort term
-if ($sort == null || $sort == "") {
-    $sort = "title:ascending";
-}
-
-include("media_sort.php");
-
-foreach ($files as $file) {
-    // open the json file
-    $media_json = file_get_contents($fdir . "/" . $file);
-    // decode the json
-    $media = json_decode($media_json, true);
-
-    $id = $media["id"];
-    $custom = $media["custom"];
-    $cteated = $media["created"];
-    $type = $media["type"];
-    $title = $media["title"];
-    $link = $media["link"];
-    $author = $media["author"];
-    $length = $media["length"];
-    $image = $media["image"];
-
-    $editing = false;
-    if (isset($_GET["edit"])) {
-        if ($_GET["edit"] == $id) {
-            $editing = true;
-        }
+    // if there is a search term
+    if ($search != null && $search != "") {
+        $files = media_search($files, $search, $to_view, $fdir);
     }
 
-    $single_view = false;
-    $moveable = $sort_by == "custom";
+    // if there is a sort term
+    if ($sort == null || $sort == "") {
+        $sort = "custom:custom";
+    }
 
-    include("media.php");
+    $files = media_sort($files, $sort, $fdir);
+
+    foreach ($files as $file) {
+        // open the json file
+        $media_json = file_get_contents($fdir . "/" . $file);
+        // decode the json
+        $media = json_decode($media_json, true);
+
+        $id = $media["id"];
+
+        $editing = false;
+        if (isset($_GET["edit"])) {
+            if ($_GET["edit"] == $id) {
+                $editing = true;
+            }
+        }
+
+        $single_view = false;
+        $moveable = str_contains($sort, "custom");
+
+        media($media, $to_view, $single_view, $moveable, $editing, $dir);
+    }
 }
+
 ?>

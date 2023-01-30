@@ -1,3 +1,7 @@
+<?php
+include("../media.php");
+?>
+
 <head>
     <meta charset='utf-8'>
     <title>Book List</title>
@@ -21,14 +25,18 @@
 
         // check if the title is empty
         if ($title != "") {
-            $data_reset = true;
             include "get_" . $type . "_data.php";
+            $data = get_data(true, $title, $author, "", "", "");
 
-            $id = "temp";
+            $media = array(
+                "title" => $title,
+                "author" => $data[0],
+                "image" => $data[1],
+                "length" => $data[2],
+                "link" => $data[3]
+            );
 
-            $single_view = true;
-            $to_view = false;
-            include("../media.php");
+            media($media, false, true, false, false);
         }
         ?>
     </div>

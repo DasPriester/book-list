@@ -48,15 +48,17 @@ if (isset($_POST["title"]) && isset($_POST["author"]) && isset($_POST["length"])
         exit();
     }
 
-    $data_reset = false;
+    $type = $media["type"];
+
     include "get_" . $type . "_data.php";
+    $data = get_data(false, $title, $author, $image, $length, $link);
 
     // update the data
     $media["title"] = $title;
-    $media["author"] = $author;
-    $media["length"] = $length;
-    $media["image"] = $image;
-    $media["link"] = $link;
+    $media["author"] = $data[0];
+    $media["image"] = $data[1];
+    $media["length"] = $data[2];
+    $media["link"] = $data[3];
 
     // encode the array as json
     $media_json = json_encode($media, JSON_PRETTY_PRINT);

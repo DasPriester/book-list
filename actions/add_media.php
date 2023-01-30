@@ -27,8 +27,8 @@ if ($dir == "fallback") {
     exit();
 }
 
-$data_reset = true;
 include "get_" . $type . "_data.php";
+$data = get_data(true, $title, $author, "", "", $link);
 
 // create an array with the data
 $media = array(
@@ -37,10 +37,10 @@ $media = array(
     "created" => time(),
     "type" => $type,
     "title" => $title,
-    "author" => $author,
-    "length" => $length,
-    "link" => $link,
-    "image" => $image
+    "author" => $data[0],
+    "image" => $data[1],
+    "length" => $data[2],
+    "link" => $data[3]
 );
 
 // encode the array as json
@@ -51,3 +51,5 @@ file_put_contents("../media/" . $dir . "/" . $media["id"] . ".json", $media_json
 
 // redirect to the home page
 header("Location: ../index.php?dir=" . $dir);
+exit();
+?>

@@ -1,3 +1,7 @@
+<?php
+include("../media_list.php");
+?>
+
 <head>
     <meta charset='utf-8'>
     <title>Book List</title>
@@ -13,12 +17,7 @@
         if (isset($_GET["dir"])) {
             $dir = $_GET["dir"];
         }
-
-        $fdir = "../media/" . $dir;
-        $files = scandir($fdir);
-
-        $to_view = true;
-        include("../media_list.php");
+        media_list($dir, "../", "", "", true);
         ?>
     </div>
 
