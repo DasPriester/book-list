@@ -25,10 +25,11 @@ include("../media.php");
 
         // check if the title is empty
         if ($title != "") {
-            include "get_" . $type . "_data.php";
+            include "apis/get_" . $type . "_data.php";
             $data = get_data(true, $title, $author, "", "", "");
 
             $media = array(
+                "type" => $type,
                 "title" => $title,
                 "author" => $data[0],
                 "image" => $data[1],

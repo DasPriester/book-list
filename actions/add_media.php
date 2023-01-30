@@ -27,7 +27,7 @@ if ($dir == "fallback") {
     exit();
 }
 
-include "get_" . $type . "_data.php";
+include "apis/get_" . $type . "_data.php";
 $data = get_data(true, $title, $author, "", "", $link);
 
 // create an array with the data

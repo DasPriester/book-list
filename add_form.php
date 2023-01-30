@@ -28,7 +28,7 @@
     <input type="text" name="title" placeholder="Title*" required value="<?php if ($edit) {
         echo $media["title"];
     } ?>">
-    <input type="text" name="author" placeholder="<?php echo $form_author_name ?>" value="<?php if ($edit) {
+    <input type="text" name="author" placeholder="<?php echo $form_artist_name ?>" value="<?php if ($edit) {
            echo $media["author"];
        } ?>">
     <?php

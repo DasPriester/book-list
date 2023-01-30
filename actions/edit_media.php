@@ -1,6 +1,13 @@
 <?php
-// Edits media from the media folder
+// get the config
+$config_json = file_get_contents("../config.json");
+$config = json_decode($config_json, true);
 
+// get the storage folder
+$storage_folder = $config["storage-folder"];
+
+
+// Edits media from the media folder
 $dir = $_GET["dir"];
 
 // check if directory is "fallback"
@@ -27,7 +34,7 @@ $dir = str_replace("..", "", str_replace("/", "", $dir));
 
 if (isset($_POST["title"]) && isset($_POST["author"]) && isset($_POST["length"]) && isset($_POST["image"]) && isset($_POST["link"])) {
     // get data from the file
-    $media_json = file_get_contents("../media/" . $dir . "/" . $id . ".json");
+    $media_json = file_get_contents("../" . $storage_folder . "/" . $dir . "/" . $id . ".json");
     $media = json_decode($media_json, true);
 
     $title = $_POST["title"];
@@ -50,7 +57,7 @@ if (isset($_POST["title"]) && isset($_POST["author"]) && isset($_POST["length"])
 
     $type = $media["type"];
 
-    include "get_" . $type . "_data.php";
+    include "apis/get_" . $type . "_data.php";
     $data = get_data(false, $title, $author, $image, $length, $link);
 
     // update the data
@@ -64,10 +71,10 @@ if (isset($_POST["title"]) && isset($_POST["author"]) && isset($_POST["length"])
     $media_json = json_encode($media, JSON_PRETTY_PRINT);
 
     // save the json to a file
-    file_put_contents("../media/" . $dir . "/" . $id . ".json", $media_json);
+    file_put_contents("../" . $storage_folder . "/" . $dir . "/" . $id . ".json", $media_json);
 } else if (isset($_GET["move"])) {
     // get all the files in the directory
-    $files = scandir("../media/" . $dir);
+    $files = scandir("../" . $storage_folder . "/" . $dir);
 
     // filter out the . and .. files
     $files = array_diff($files, array('.', '..'));
@@ -76,7 +83,7 @@ if (isset($_POST["title"]) && isset($_POST["author"]) && isset($_POST["length"])
     $file_list = array();
     $i = 0;
     foreach ($files as $file) {
-        $file_json = file_get_contents("../media/" . $dir . "/" . $file);
+        $file_json = file_get_contents("../" . $storage_folder . "/" . $dir . "/" . $file);
         $file_list[$i] = json_decode($file_json, true);
         $i++;
     }
@@ -120,7 +127,7 @@ if (isset($_POST["title"]) && isset($_POST["author"]) && isset($_POST["length"])
     for ($i = 0; $i < count($file_list); $i++) {
         $file_list[$i]["custom"] = $i;
         $file_json = json_encode($file_list[$i], JSON_PRETTY_PRINT);
-        file_put_contents("../media/" . $dir . "/" . $file_list[$i]["id"] . ".json", $file_json);
+        file_put_contents("../" . $storage_folder . "/" . $dir . "/" . $file_list[$i]["id"] . ".json", $file_json);
     }
 }
 

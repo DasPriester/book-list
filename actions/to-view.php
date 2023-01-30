@@ -1,5 +1,12 @@
 <?php
 include("../media_list.php");
+include("../media_sort.php");
+
+// get the config
+$config_json = file_get_contents("../config.json");
+$config = json_decode($config_json, true);
+
+$storage_folder = $config["storage-folder"];
 ?>
 
 <head>
@@ -17,7 +24,7 @@ include("../media_list.php");
         if (isset($_GET["dir"])) {
             $dir = $_GET["dir"];
         }
-        media_list($dir, "../", "", "", true);
+        media_list($storage_folder, $dir, "../", "", "", true);
         ?>
     </div>
 

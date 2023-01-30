@@ -5,6 +5,13 @@ session_start();
 include("media_list.php");
 include("media_search.php");
 include("media_sort.php");
+
+// load config
+$config_json = file_get_contents("config.json");
+$config = json_decode($config_json, true);
+
+// get the stoage folder
+$storage_folder = $config["storage-folder"];
 ?>
 <!DOCTYPE html>
 <html>
@@ -35,8 +42,8 @@ include("media_sort.php");
             }
 
             // check if the directory exists, if not, create it
-            if (!file_exists("media/" . $dir) && $dir != "fallback") {
-                mkdir("media/" . $dir);
+            if (!file_exists($storage_folder . "/" . $dir) && $dir != "fallback") {
+                mkdir($storage_folder . "/" . $dir);
             }
         }
 
@@ -70,7 +77,7 @@ include("media_sort.php");
         if (isset($_GET["edit"])) {
             $edit = true;
 
-            $media_json = file_get_contents("media/" . $_GET["dir"] . "/" . $_GET["edit"] . ".json");
+            $media_json = file_get_contents($storage_folder . "/" . $_GET["dir"] . "/" . $_GET["edit"] . ".json");
             $media = json_decode($media_json, true);
 
             $add_media = $media["type"];
@@ -81,49 +88,19 @@ include("media_sort.php");
                 if (isset($_SESSION["add_media"])) {
                     $add_media = $_SESSION["add_media"];
                 } else {
-                    $add_media = "book";
+                    // get first type from config
+                    $add_media = array_key_first($config["types"]);
                 }
             }
         }
         $_SESSION["add_media"] = $add_media;
 
-        switch ($add_media) {
-            case "book":
-                $form_tp = "book";
-                $form_icon = "book";
-                $form_author_name = "Author";
-                break;
-            case "movie":
-                $form_tp = "movie";
-                $form_icon = "movie";
-                $form_author_name = "Director";
-                break;
-            case "series":
-                $form_tp = "series";
-                $form_icon = "tv";
-                $form_author_name = "Director";
-                break;
-            case "video":
-                $form_tp = "video";
-                $form_icon = "videocam";
-                $form_author_name = "Channel";
-                break;
-            case "song":
-                $form_tp = "song";
-                $form_icon = "music_note";
-                $form_author_name = "Artist";
-                break;
-            case "album":
-                $form_tp = "album";
-                $form_icon = "album";
-                $form_author_name = "Artist";
-                break;
-            case "game":
-                $form_tp = "game";
-                $form_icon = "videogame_asset";
-                $form_author_name = "Developer";
-                break;
-        }
+        // get info from config "types"
+        $config_type = $config["types"][$add_media];
+
+        $form_tp = $add_media;
+        $form_icon = str_replace(" ", "_", strtolower($config_type["icon"]));
+        $form_artist_name = $config_type["artist-name"];
 
         $sort_by = "";
         $sort_order = "";
@@ -207,7 +184,7 @@ include("media_sort.php");
                 </option>
                 <option value="type" <?php if ($sort_by == "type") {
                     echo "selected";
-                } ?>>Media
+                } ?>>Type of media
                 </option>
                 <option value="created" <?php if ($sort_by == "created") {
                     echo "selected";
@@ -216,57 +193,20 @@ include("media_sort.php");
             </select>
         </form>
 
-
         <!-- choose between type of media -->
         <div class="dropdown" <?php if ($edit || $dir == "fallback") {
             echo "style='display: none;'";
         } ?>>
-            <a href="index.php?dir=<?php echo $dir ?>&add_media=book" title="Book" class="<?php if ($add_media == "book") {
-                   echo "active";
-               } ?>" tabindex="0">
-                <i class="material-icons">book</i>
-            </a>
-            <div class="category">
-                <a href="index.php?dir=<?php echo $dir ?>&add_media=movie" title="Movie" class="<?php if ($add_media == "movie") {
-                       echo "active";
-                   } ?>" tabindex="0">
-                    <i class="material-icons">movie</i>
-                </a>
-                <a href="index.php?dir=<?php echo $dir ?>&add_media=series" title="Series" class="<?php if ($add_media == "series") {
-                       echo "active";
-                   } ?>" tabindex="0">
-                    <i class="material-icons">tv</i>
-                </a>
-                <a href="index.php?dir=<?php echo $dir ?>&add_media=video" title="Video" class="<?php if ($add_media == "video") {
-                       echo "active";
-                   } ?>" tabindex="0">
-                    <i class="material-icons">videocam</i>
-                </a>
-            </div>
-            <div class="category">
-                <a href="index.php?dir=<?php echo $dir ?>&add_media=song" title="Song" class="<?php if ($add_media == "song") {
-                       echo "active";
-                   } ?>" tabindex="0">
-                    <i class="material-icons">music_note</i>
-                </a>
-                <a href="index.php?dir=<?php echo $dir ?>&add_media=album" title="Album" class="<?php if ($add_media == "album") {
-                       echo "active";
-                   } ?>" tabindex="0">
-                    <i class="material-icons">album</i>
-                </a>
-            </div>
-            <a href="index.php?dir=<?php echo $dir ?>&add_media=game" title="Game" class="<?php if ($add_media == "game") {
-                   echo "active";
-               } ?>" tabindex="0">
-                <i class="material-icons">videogame_asset</i>
-            </a>
+            <?php
+            construct_type_menu($config, $add_media, $dir);
+            ?>
         </div>
 
         <?php
         if ($dir != "fallback") {
             include "add_form.php";
 
-            $fdir = "media/" . $dir;
+            $fdir = $storage_folder . "/" . $dir;
             $files = scandir($fdir);
             // filter out the . and .. files
             $files = array_diff($files, array('.', '..'));
@@ -298,7 +238,7 @@ include("media_sort.php");
     <div id="content">
         <?php
         if ($dir != "fallback") {
-            media_list($dir, "", $sort, $_GET["search"] ?? "", false);
+            media_list($storage_folder, $dir, "", $sort, $_GET["search"] ?? "", false);
         }
 
         if ($dir == "fallback" || count($files) == 0) {
@@ -313,3 +253,47 @@ include("media_sort.php");
 </body>
 
 </html>
+
+<?php
+function construct_type_menu($config, $add_media, $dir)
+{
+
+    $last_category = "0";
+    echo "<div class='category'>";
+    foreach ($config["types"] as $name => $config_type) {
+        $can_show = $config_type["key-file"] == "" || data_key_exists($config_type["key-file"]);
+
+        if ($can_show) {
+            if ($config_type["category"] != $last_category && $config_type["category"] < 4) {
+                echo "</div><div class='category'>";
+            }
+
+            // make lowercase and replace spaces with underscores
+            $icon_string = str_replace(" ", "_", strtolower($config_type["icon"]));
+            echo "<a href='index.php?dir=" . $dir . "&add_media=" . $name . "' title='" . $name . "' class='" . ($add_media == $name ? "active" : "")
+                . "' tabindex='0'>"
+                . "<i class='material-icons'>" . $icon_string . "</i>"
+                . "</a>";
+
+            $last_category = $config_type["category"];
+        }
+    }
+    echo "</div>";
+}
+
+function data_key_exists($key)
+{
+    $url = "data/" . $key . ".txt";
+    if (file_exists($url)) {
+        $file = fopen($url, "r");
+        if (filesize($url) != 0) {
+            $content = fread($file, filesize($url));
+            fclose($file);
+            if ($content != "") {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+?>

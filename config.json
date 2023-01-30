@@ -1,0 +1,47 @@
+{
+    "storage-folder": "media",
+    "types": {
+        "book": {
+            "icon": "Book",
+            "artist-name": "Author",
+            "category": "0",
+            "key-file": ""
+        },
+        "movie": {
+            "icon": "Movie",
+            "artist-name": "Director",
+            "category": "1",
+            "key-file": ""
+        },
+        "series": {
+            "icon": "tv",
+            "artist-name": "Director",
+            "category": "1",
+            "key-file": ""
+        },
+        "video": {
+            "icon": "Videocam",
+            "artist-name": "Channel",
+            "category": "1",
+            "key-file": "youtube_key"
+        },
+        "song": {
+            "icon": "Music Note",
+            "artist-name": "Artist",
+            "category": "2",
+            "key-file": "spotify_cid_cis"
+        },
+        "album": {
+            "icon": "Album",
+            "artist-name": "Artist",
+            "category": "2",
+            "key-file": "spotify_cid_cis"
+        },
+        "game": {
+            "icon": "Videogame Asset",
+            "artist-name": "Developer",
+            "category": "3",
+            "key-file": "rawg_key"
+        }
+    }
+}

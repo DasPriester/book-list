@@ -159,6 +159,11 @@ form {
   z-index: 2;
 }
 
+/* if .category has only one child */
+.dropdown .category:has(a:only-child) {
+  box-shadow: none;
+}
+
 form > label {
   margin: 5px;
 
