@@ -77,7 +77,8 @@ form {
 
 .dropdown {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  /* Auto fit content in one row */
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
   align-items: flex-start;
   gap: 10px;
   padding: 5px;
@@ -240,7 +241,7 @@ button:focus {
 
 .form-buttons {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
 }
 
 #content {
@@ -316,7 +317,7 @@ button:focus {
   border-radius: 5px;
   cursor: pointer;
   margin: 10px;
-  z-index: 1;
+  z-index: 100;
 }
 
 .back:hover,
@@ -343,7 +344,7 @@ button:focus {
   border-radius: 5px;
   cursor: pointer;
   margin: 10px;
-  z-index: 1;
+  z-index: 100;
 }
 
 #menu .delete:hover,
@@ -440,6 +441,19 @@ button:focus {
   );
 }
 
+/* Make content uninteractible */
+.overlay * {
+  pointer-events: none;
+  /* Make uninteractible with touch */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  touch-action: none;
+}
+
 .media.to-view > .overlay,
 .media.single-view > .overlay {
   padding: calc(1 / 18 * 100vh);
@@ -452,6 +466,19 @@ button:focus {
 .media:focus > .overlay,
 .media:has(:focus) > .overlay {
   opacity: 1;
+}
+
+/* Make interactible again */
+.media:focus > .overlay *,
+.media:has(:focus) > .overlay * {
+  pointer-events: auto;
+  -webkit-touch-callout: auto;
+  -webkit-user-select: auto;
+  -khtml-user-select: auto;
+  -moz-user-select: auto;
+  -ms-user-select: auto;
+  user-select: auto;
+  touch-action: auto;
 }
 
 .overlay > h4,
@@ -554,12 +581,22 @@ button:focus {
   padding: 0.5em;
 }
 
+/* hide on first element */
+.media:first-child > .overlay > .move_left {
+  display: none;
+}
+
 .overlay > .move_right {
   position: absolute;
   right: -40%;
   bottom: 50%;
   transform: translateY(50%);
   padding: 0.5em;
+}
+
+/* hide on last element */
+.media:last-child > .overlay > .move_right {
+  display: none;
 }
 
 .overlay > .move_right > .material-icons,
@@ -637,4 +674,68 @@ button:focus {
 #go-to-site:focus {
   box-shadow: 0 0 10px var(--color-shadow);
   padding-right: 1vw;
+}
+
+/* Mobile support */
+
+@media (max-width: 1200px) and (orientation: portrait) {
+  :root {
+    --unit-size: calc(1 / 18 * 100vw);
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #menu {
+    width: calc(100% - 1em);
+    padding: 0.5em;
+    gap: 0.5em;
+    overflow: scroll;
+    height: 40em;
+  }
+
+  #content {
+    width: calc(100% - 1em);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0.5em;
+    padding: 0.5em;
+    overflow: scroll;
+    height: calc(100% - 1em);
+    overflow-x: hidden;
+  }
+
+  .media {
+    width: calc(50vw - 1em);
+    height: calc(12 * var(--unit-size));
+    border-radius: var(--unit-size);
+  }
+
+  .media.squared {
+    height: calc(50vw - 1em);
+  }
+
+  .media.landscape {
+    height: calc(4.5 * var(--unit-size));
+    width: calc(50vw - 1em);
+  }
+
+  .media > .overlay {
+    font-size: var(--unit-size);
+    border-radius: var(--unit-size);
+  }
+
+  .media .material-icons {
+    font-size: calc(1.5 * var(--unit-size));
+  }
+
+  .media > .overlay > .move_left {
+    left: -30%;
+  }
+
+  .media > .overlay > .move_right {
+    right: -30%;
+  }
 }

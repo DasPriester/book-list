@@ -22,6 +22,8 @@ $storage_folder = $config["storage-folder"];
     <link rel='stylesheet' type='text/css' media='screen' href='css/main-page.css'>
     <script src='js/main.js'></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
 </head>
 
 <body>
@@ -257,28 +259,39 @@ $storage_folder = $config["storage-folder"];
 <?php
 function construct_type_menu($config, $add_media, $dir)
 {
+    $categories = array();
 
-    $last_category = "0";
-    echo "<div class='category'>";
     foreach ($config["types"] as $name => $config_type) {
         $can_show = $config_type["key-file"] == "" || data_key_exists($config_type["key-file"]);
 
         if ($can_show) {
-            if ($config_type["category"] != $last_category && $config_type["category"] < 4) {
-                echo "</div><div class='category'>";
+            if (!isset($categories[$config_type["category"]])) {
+                // make new category if it doesn't exist
+                $categories[$config_type["category"]] = array();
             }
 
-            // make lowercase and replace spaces with underscores
-            $icon_string = str_replace(" ", "_", strtolower($config_type["icon"]));
-            echo "<a href='index.php?dir=" . $dir . "&add_media=" . $name . "' title='" . $name . "' class='" . ($add_media == $name ? "active" : "")
-                . "' tabindex='0'>"
-                . "<i class='material-icons'>" . $icon_string . "</i>"
-                . "</a>";
-
-            $last_category = $config_type["category"];
+            // add the type to the category
+            $categories[$config_type["category"]][$name] = $config_type;
         }
     }
-    echo "</div>";
+
+    // sort the categories
+    ksort($categories);
+
+    foreach ($categories as $category => $types) {
+        echo "<div class='category'>";
+        foreach ($types as $name => $config_type) {
+            if ($can_show) {
+                // make lowercase and replace spaces with underscores
+                $icon_string = str_replace(" ", "_", strtolower($config_type["icon"]));
+                echo "<a href='index.php?dir=" . $dir . "&add_media=" . $name . "' title='" . ucfirst($name) . "' class='" . ($add_media == $name ? "active" : "")
+                    . "' tabindex='0'>"
+                    . "<i class='material-icons'>" . $icon_string . "</i>"
+                    . "</a>";
+            }
+        }
+        echo "</div>";
+    }
 }
 
 function data_key_exists($key)
