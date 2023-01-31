@@ -99,6 +99,7 @@ form {
   justify-content: center;
   align-items: center;
   width: calc(100% - 10px);
+  height: calc(100% - 10px);
 }
 
 .dropdown a:hover,
@@ -301,7 +302,7 @@ button:focus {
 }
 
 .back {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   padding: 10px;
@@ -328,7 +329,7 @@ button:focus {
 }
 
 #menu .delete {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   right: 0;
   padding: 10px;
@@ -676,50 +677,64 @@ button:focus {
   padding-right: 1vw;
 }
 
+form.sort > .dropdown {
+  margin: -10px;
+}
+
+form.sort > .dropdown .material-icons {
+  font-size: 1.2em;
+}
+
 /* Mobile support */
 
 @media (max-width: 1200px) and (orientation: portrait) {
   :root {
-    --unit-size: calc(1 / 18 * 100vw);
+    --unit-size: calc(0.5 / 18 * 100vw);
   }
 
   body {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
 
   #menu {
-    width: calc(100% - 1em);
-    padding: 0.5em;
-    gap: 0.5em;
-    overflow: scroll;
-    height: 40em;
+    width: calc(100% - var(--unit-size));
+    padding: calc(0.5 * var(--unit-size));
+    gap: calc(0.5 * var(--unit-size));
+    flex: 0 0 auto;
+    overflow: hidden;
+  }
+
+  #menu hr {
+    display: none;
   }
 
   #content {
-    width: calc(100% - 1em);
+    width: calc(100% - var(--unit-size));
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-gap: 0.5em;
-    padding: 0.5em;
+    grid-gap: calc(0.5 * var(--unit-size));
+    padding: calc(0.5 * var(--unit-size));
     overflow: scroll;
-    height: calc(100% - 1em);
     overflow-x: hidden;
+    padding-bottom: calc(2.5 * var(--unit-size));
+    flex: 1 1 auto;
   }
 
   .media {
-    width: calc(50vw - 1em);
-    height: calc(12 * var(--unit-size));
+    width: calc(50vw - var(--unit-size));
+    height: calc(24 * var(--unit-size));
     border-radius: var(--unit-size);
   }
 
   .media.squared {
-    height: calc(50vw - 1em);
+    height: calc(50vw - var(--unit-size));
   }
 
   .media.landscape {
-    height: calc(4.5 * var(--unit-size));
-    width: calc(50vw - 1em);
+    height: calc(9 * var(--unit-size));
+    width: calc(50vw - var(--unit-size));
   }
 
   .media > .overlay {
@@ -728,14 +743,106 @@ button:focus {
   }
 
   .media .material-icons {
-    font-size: calc(1.5 * var(--unit-size));
+    font-size: calc(3 * var(--unit-size));
   }
 
   .media > .overlay > .move_left {
-    left: -30%;
+    top: 50%;
+    left: -10%;
   }
 
   .media > .overlay > .move_right {
-    right: -30%;
+    top: 50%;
+    right: -10%;
+  }
+
+  #menu > .back,
+  #menu > .delete {
+    width: calc(2 * var(--unit-size));
+    height: calc(2 * var(--unit-size));
+    border-radius: calc(0.75 * var(--unit-size));
+    margin: calc(0.25 * var(--unit-size));
+    padding: calc(0.25 * var(--unit-size));
+  }
+
+  #menu > .back > .material-icons,
+  #menu > .delete > .material-icons {
+    font-size: calc(2 * var(--unit-size));
+  }
+
+  /* Change all the border-radius */
+  form {
+    padding: calc(0.5 * var(--unit-size));
+    gap: calc(0.5 * var(--unit-size));
+    border-radius: calc(0.5 * var(--unit-size));
+  }
+
+  a {
+    border-radius: calc(0.5 * var(--unit-size));
+  }
+
+  form > .input {
+    border-radius: calc(0.5 * var(--unit-size));
+  }
+
+  form.sort > .dropdown {
+    margin: calc(-0.5 * var(--unit-size));
+  }
+
+  .dropdown {
+    border-radius: calc(0.5 * var(--unit-size));
+    height: calc(2 * var(--unit-size));
+    gap: calc(0.5 * var(--unit-size));
+    padding: calc(0.5 * var(--unit-size));
+  }
+
+  .dropdown a {
+    border-radius: calc(0.5 * var(--unit-size));
+    height: calc(1.5 * var(--unit-size));
+  }
+
+  form button {
+    border-radius: calc(0.5 * var(--unit-size));
+  }
+
+  /* Change all the font-size */
+  form > input {
+    font-size: calc(1 * var(--unit-size));
+  }
+
+  form > p {
+    font-size: calc(0.8 * var(--unit-size));
+  }
+
+  form > label {
+    font-size: calc(1 * var(--unit-size));
+  }
+
+  form .material-icons {
+    font-size: calc(2 * var(--unit-size));
+  }
+
+  .dropdown .material-icons {
+    font-size: calc(1.5 * var(--unit-size));
+  }
+
+  form.sort > .dropdown .material-icons {
+    font-size: calc(1.2 * var(--unit-size));
+  }
+
+  form select {
+    font-size: calc(1 * var(--unit-size));
+  }
+
+  .media > .overlay > h2 {
+    font-size: calc(2 * var(--unit-size));
+  }
+
+  .media > .overlay > h3 {
+    font-size: calc(1.5 * var(--unit-size));
+  }
+
+  .media > .overlay > h4 {
+    font-size: calc(1 * var(--unit-size));
   }
 }

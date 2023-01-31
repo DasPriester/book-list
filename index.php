@@ -20,9 +20,7 @@ $storage_folder = $config["storage-folder"];
     <meta charset='utf-8'>
     <title>Book List</title>
     <link rel='stylesheet' type='text/css' media='screen' href='css/main-page.css'>
-    <script src='js/main.js'></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
     <meta name="viewport" content="width=device-width, initial-scale=0.5">
 </head>
 
@@ -141,11 +139,11 @@ $storage_folder = $config["storage-folder"];
             echo "display: none;";
         } ?>">
             <input type="hidden" name="dir" value="<?php echo $dir ?>">
-            <div class="dropdown" style="margin: -10px;">
+            <div class="dropdown">
                 <a href="index.php?dir=<?php echo $dir ?>&sort_by=custom&sort_order=custom" title="Custom" class="<?php if ($sort_order == "custom") {
                        echo "active";
-                   } ?>" tabindex="0" style="height: 1.5em;">
-                    <i class="material-icons" style="font-size: 1.2em;">swap_vert toc</i>
+                   } ?>" tabindex="0">
+                    <i class="material-icons">swap_vert toc</i>
                 </a>
                 <a href="index.php?dir=<?php echo $dir ?>&sort_by=<?php
                    if ($sort_by == "custom") {
@@ -155,8 +153,8 @@ $storage_folder = $config["storage-folder"];
                    }
                    ?>&sort_order=ascending" title="Ascending" class="<?php if ($sort_order == "ascending") {
                        echo "active";
-                   } ?>" tabindex="0" style="height: 1.5em;">
-                    <i class="material-icons" style="font-size: 1.2em;">arrow_upward sort</i>
+                   } ?>" tabindex="0">
+                    <i class="material-icons">arrow_upward sort</i>
                 </a>
                 <a href="index.php?dir=<?php echo $dir ?>&sort_by=<?php
                    if ($sort_by == "custom") {
@@ -166,8 +164,8 @@ $storage_folder = $config["storage-folder"];
                    }
                    ?>&sort_order=descending" title="Descending" class="<?php if ($sort_order == "descending") {
                        echo "active";
-                   } ?>" tabindex="0" style="height: 1.5em;">
-                    <i class="material-icons" style="font-size: 1.2em;">arrow_downward sort</i>
+                   } ?>" tabindex="0">
+                    <i class="material-icons">arrow_downward sort</i>
                 </a>
             </div>
             <hr style="<?php if ($sort_by == "custom") {
@@ -253,6 +251,7 @@ $storage_folder = $config["storage-folder"];
         ?>
     </div>
 </body>
+<script src='js/main.js'></script>
 
 </html>
 
