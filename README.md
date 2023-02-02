@@ -90,6 +90,7 @@
         "artist-name": "<artist-name>",
         "category": "<category>",
         "key-file": "<key-file>",
+        "layout": "<layout>"
     },
     ```
     - `<type-name>`: The name of the type. This is what you will use to identify the type later on.
@@ -103,6 +104,10 @@
         - 3: Playing
     - `<key-file>`: The name of the file that will contain your api-key information. Before letting the user add an entry the site will check if the file exists and contains some information. If it does not, the type will not be displayed in the dropdown menu. The files are located in the [data](data) directory. For example, if you want to add a new type called `song`, you could create a file called `spotify_key.txt` in the [data](data) directory and use `spotify_key` as the key file.
     If you do not need an api key, you can leave this empty.
+    - `<layout>`: The layout of the entry. This determines how the entry will be displayed in the list. This should be one of the following:
+        - "" (empty): The entry will be displayed in a book like format.
+        - "squared": The entry will be displayed in a squared format.
+        - "landscape": The entry will be displayed in a landscape format.
 2. Create a `get_<type-name>_data.php` file in the [actions/apis](actions/apis/) directory.
 3. Write a `get_data` function.
 It should look like this:

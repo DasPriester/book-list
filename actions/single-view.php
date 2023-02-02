@@ -10,11 +10,17 @@ include("../media.php");
 </head>
 
 <body style="background: none transparent;">
-    <div id="content">
+    <div id="content" style="overflow: hidden;">
         <?php
         // get the title and type
         $title = $_GET["title"];
         $type = $_GET["type"];
+
+        // get the config
+        include "../config.php";
+
+        // get the layout from the config
+        $layout = $config["types"][$type]["layout"];
 
         // prevent script injection
         $title = str_replace("..", "", str_replace("/", "", $title));
@@ -37,7 +43,7 @@ include("../media.php");
                 "link" => $data[3]
             );
 
-            media($media, false, true, false, false);
+            media($media, false, true, false, false, $layout);
         }
         ?>
     </div>

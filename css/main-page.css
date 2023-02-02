@@ -198,6 +198,11 @@ form > label {
 .search > input:focus {
   outline: none;
   border: 0;
+  box-shadow: none;
+}
+
+.search:has(input:focus) {
+  box-shadow: 0 0 10px var(--color-shadow);
 }
 
 form > p {
@@ -217,9 +222,14 @@ input {
 input:focus {
   outline: none;
   border: 2px solid var(--color-accent);
+  box-shadow: 0 0 10px var(--color-shadow);
 }
 
 input::placeholder {
+  color: var(--color-text);
+}
+
+input:focus::placeholder {
   color: var(--color-text-secondary);
 }
 
@@ -470,6 +480,7 @@ button:focus {
 }
 
 /* Make interactible again */
+.media:hover > .overlay *,
 .media:focus > .overlay *,
 .media:has(:focus) > .overlay * {
   pointer-events: auto;
@@ -844,5 +855,17 @@ form.sort > .dropdown .material-icons {
 
   .media > .overlay > h4 {
     font-size: calc(1 * var(--unit-size));
+  }
+
+  .media:hover > .overlay * {
+    pointer-events: none;
+    /* Make uninteractible with touch */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    touch-action: none;
   }
 }

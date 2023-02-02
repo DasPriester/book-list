@@ -1,13 +1,21 @@
 <?php
-function media($media, $to_view, $single_view, $moveable, $editing, $dir = "")
+function media($media, $to_view, $single_view, $moveable, $editing, $css = "", $dir = "")
 {
     if ($media["image"] == "none") {
-        echo "<div class='media" . ($media["type"] == "song" || $media["type"] == "album" ? " squared" : "") . ($media["type"] == "video" ? " landscape" : "") . ($to_view ? " to-view" : "") . ($single_view ? " single-view" : "") . ($editing ? " editing" : "") . "' style='background-color: #ccc;' tabindex='0'>";
+        echo "<div class='media" . ($css != "" ? " " . $css : "")
+            . ($to_view ? " to-view" : "")
+            . ($single_view ? " single-view" : "")
+            . ($editing ? " editing" : "")
+            . "' style='background-color: #ccc;' tabindex='0'>";
         echo "<div class='no-image'>"
             . "<i class='material-icons'>hide_image</i>"
             . "</div>";
     } else {
-        echo "<div class='media" . ($media["type"] == "song" || $media["type"] == "album" ? " squared" : "") . ($media["type"] == "video" ? " landscape" : "") . ($to_view ? " to-view" : "") . ($single_view ? " single-view" : "") . ($editing ? " editing" : "") . "' style='background-image: url(" . $media["image"] . ")' tabindex='0'>";
+        echo "<div class='media" . ($css != "" ? " " . $css : "")
+            . ($to_view ? " to-view" : "")
+            . ($single_view ? " single-view" : "")
+            . ($editing ? " editing" : "")
+            . "' style='background-image: url(" . $media["image"] . ")' tabindex='0'>";
     }
     echo "<div class='overlay'>"
         . "<h2>" . $media["title"] . "</h2>"

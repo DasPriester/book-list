@@ -238,7 +238,7 @@ $storage_folder = $config["storage-folder"];
     <div id="content">
         <?php
         if ($dir != "fallback") {
-            media_list($storage_folder, $dir, "", $sort, $_GET["search"] ?? "", false);
+            media_list($storage_folder, $dir, "", $sort, $_GET["search"] ?? "", false, $config);
         }
 
         if ($dir == "fallback" || count($files) == 0) {

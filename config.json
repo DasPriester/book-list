@@ -5,43 +5,50 @@
             "icon": "Book",
             "artist-name": "Author",
             "category": "0",
-            "key-file": ""
+            "key-file": "",
+            "layout": ""
         },
         "movie": {
             "icon": "Movie",
             "artist-name": "Director",
             "category": "1",
-            "key-file": ""
+            "key-file": "",
+            "layout": ""
         },
         "series": {
             "icon": "tv",
             "artist-name": "Director",
             "category": "1",
-            "key-file": ""
+            "key-file": "",
+            "layout": ""
         },
         "video": {
             "icon": "Videocam",
             "artist-name": "Channel",
             "category": "1",
-            "key-file": "youtube_key"
+            "key-file": "youtube_key",
+            "layout": "landscape"
         },
         "song": {
             "icon": "Music Note",
             "artist-name": "Artist",
             "category": "2",
-            "key-file": "spotify_cid_cis"
+            "key-file": "spotify_cid_cis",
+            "layout": "squared"
         },
         "album": {
             "icon": "Album",
             "artist-name": "Artist",
             "category": "2",
-            "key-file": "spotify_cid_cis"
+            "key-file": "spotify_cid_cis",
+            "layout": "squared"
         },
         "game": {
             "icon": "Videogame Asset",
             "artist-name": "Developer",
             "category": "3",
-            "key-file": "rawg_key"
+            "key-file": "rawg_key",
+            "layout": ""
         }
     }
 }

@@ -16,7 +16,7 @@ $storage_folder = $config["storage-folder"];
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
-<body style="background: none transparent;">
+<body style="background: none transparent; overflow-x: hidden;">
     <div id="content">
         <?php
         // get the directory
@@ -24,7 +24,7 @@ $storage_folder = $config["storage-folder"];
         if (isset($_GET["dir"])) {
             $dir = $_GET["dir"];
         }
-        media_list($storage_folder, $dir, "../", "", "", true);
+        media_list($storage_folder, $dir, "../", "", "", true, $config);
         ?>
     </div>
 
